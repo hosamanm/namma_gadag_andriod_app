@@ -1,16 +1,151 @@
+###############################################################################
+# 🧾 PROJECT INFORMATION
+###############################################################################
+
+# App bundle name used by Flutter & Android/iOS tooling
 name: namma_gadag
-description: Gadag Tourist Places
+
+# Short description (appears in stores & package info)
+description: "Namma Gadag – Discover beautiful tourist places of Gadag"
+
+# Prevent accidental publishing to pub.dev
 publish_to: "none"
 
+# Version format → MAJOR.MINOR.PATCH+BUILD
+# Shown on Play Store / device info
+version: 1.0.0+1
+
+###############################################################################
+# 🎯 SDK COMPATIBILITY
+###############################################################################
+
+# Flutter + Dart version constraint
+# Means → works with Dart 2.17 to 4.x
 environment:
   sdk: ">=2.17.0 <4.0.0"
+
+###############################################################################
+# 📦 DEPENDENCIES
+###############################################################################
 
 dependencies:
   flutter:
     sdk: flutter
-  audioplayers: ^5.2.0
+
+  # ✅ State Management
+  # Used for theme, favorites, language switching, etc.
+  provider: ^6.1.2
+
+  # ✅ TEXT → SPEECH (Audio narration)
+  # Reads Kannada / English content aloud
+  flutter_tts: ^4.2.3
+
+  # ✅ AUDIO PLAYER
+  # For background music or hosted audio guides
+  audioplayers: ^5.2.1
+
+  # ✅ OPEN URL + GOOGLE MAPS
+  # Used to open locations & videos externally
+  url_launcher: ^6.2.5
+
+  # ✅ LOCAL STORAGE
+  # Saves:
+  #   • favorites
+  #   • theme mode
+  #   • language selection
+  shared_preferences: ^2.2.2
+
+  # ✅ IMAGE CAROUSEL
+  # Hero sliders on details screen
+  carousel_slider: ^5.0.0
+
+  # ✅ SHIMMER EFFECT
+  # Animated glow titles & loading placeholders
+  shimmer: ^3.0.0
+
+
+###############################################################################
+# 🛠️ DEV TOOLS
+###############################################################################
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  # ✅ APP ICON GENERATOR TOOL
+  # Converts PNG into platform-specific launcher icons
+  flutter_launcher_icons: ^0.13.1
+
+
+###############################################################################
+# 🎨 FLUTTER ASSETS & FONTS
+###############################################################################
 
 flutter:
+  uses-material-design: true
+
+  ###########################################################################
+  # 🖼️ ASSETS
+  ###########################################################################
+
   assets:
-    - assets/images/
+    # 🔹 All image assets
+    - assets/images/places/place1/
+    - assets/images/places/place2/
+    - assets/images/places/place3/
+    - assets/images/places/place4/
+    - assets/images/places/place5/
+    - assets/images/places/place6/
+    - assets/images/places/place7/
+    - assets/images/places/place8/
+    - assets/images/places/place9/
+    - assets/images/places/place10/
+    - assets/images/places/place11/
+    - assets/images/places/place12/
+    - assets/images/places/place13/
+    - assets/images/places/place14/
+    - assets/images/places/place15/
+
+    # 🔹 Photo galleries / carousels
+    - assets/gallery/
+
+    # 🔹 Audio narrations
     - assets/audio/
+
+    # 🔹 Developer profile and splash screens
+    - assets/
+
+  ###########################################################################
+  # ✍️ FONTS – Kannada Support
+  ###########################################################################
+
+  fonts:
+    - family: NotoKannada
+
+      fonts:
+
+        # Normal Kannada font
+        - asset: assets/fonts/NotoSans-Regular.ttf
+
+        # Bold Kannada font
+        - asset: assets/fonts/NotoSans-Bold.ttf
+          weight: 700
+
+
+###############################################################################
+# 📱 APP ICON CONFIGURATION
+###############################################################################
+
+flutter_launcher_icons:
+
+  # Generate Android launcher icon
+  android: true
+
+  # iOS icon generation disabled
+  ios: false
+
+  # Minimum Android SDK allowed
+  min_sdk_android: 21
+
+  # 🖼️ SOURCE ICON PNG (1024×1024 recommended)
+  image_path: "assets/icon.png"
