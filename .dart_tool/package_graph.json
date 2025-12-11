@@ -5,10 +5,11 @@
   "packages": [
     {
       "name": "namma_gadag",
-      "version": "1.0.0+1",
+      "version": "1.0.0+2",
       "dependencies": [
         "audioplayers",
         "carousel_slider",
+        "change_app_package_name",
         "flutter",
         "flutter_tts",
         "provider",
@@ -51,6 +52,11 @@
         "test_api",
         "vector_math"
       ]
+    },
+    {
+      "name": "change_app_package_name",
+      "version": "1.5.0",
+      "dependencies": []
     },
     {
       "name": "shimmer",

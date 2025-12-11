@@ -386,9 +386,9 @@ Badami is a world-renowned heritage town famous for its spectacular rock-cut cav
 //////////////////////////////////////////////////////////////////////////////
   TouristPlace(
     id: "place_15",
-    nameEN: "Bhimambika Temple – Itagi",
+    nameEN: "Bhimambika Temple Itagi",
     shortEN: "Bhimambika Temple",
-    nameKN: "ಶ್ರೀ ಭೀಮಾಂಬಿಕಾ ದೇವಸ್ಥಾನ (ಭೀಮವ್ವ) – ಇಟಗಿ",
+    nameKN: "ಶ್ರೀ ಭೀಮಾಂಬಿಕಾ ದೇವಸ್ಥಾನ (ಭೀಮವ್ವ) ಇಟಗಿ",
     shortKN: "ಭೀಮಾಂಬಿಕಾ ದೇವಸ್ಥಾನ",
 
     descEN: """

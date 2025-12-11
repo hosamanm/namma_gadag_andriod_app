@@ -1,12 +1,10 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 ////////////////////////////////////////////////////////////////////////////////
 /// 🌐 PROVIDERS
-///
-/// - LanguageProvider  → Kannada / English toggle
-/// - ThemeController   → Light / Dark theme switch
 ////////////////////////////////////////////////////////////////////////////////
 
 import '../services/language_provider.dart';
@@ -21,26 +19,12 @@ import '../screens/image_gallery_screen.dart';
 
 ////////////////////////////////////////////////////////////////////////////////
 /// 🌟 PREMIUM GLASS EFFECT DRAWER
-///
-/// FEATURES INCLUDED:
-///
-/// ✅ Kannada ⇄ English language switching
-/// ✅ Theme toggle (Light / Dark)
-/// ✅ Audio narration hooks ready
-/// ✅ Video Gallery navigation
-/// ✅ Image Gallery navigation
-/// ✅ Glass blur background
-/// ✅ Animated glowing avatar
-/// ✅ RichText creator credit badge
-/// ✅ Responsive grid menu
-/// ✅ Clean architecture
 ////////////////////////////////////////////////////////////////////////////////
 
 class AppDrawer extends StatefulWidget {
   final VoidCallback showLogin;
   final VoidCallback showProfile;
 
-  /// ✅ CONST constructor eliminates Flutter warnings
   const AppDrawer({
     super.key,
     required this.showLogin,
@@ -51,9 +35,6 @@ class AppDrawer extends StatefulWidget {
   State<AppDrawer> createState() => _AppDrawerState();
 }
 
-////////////////////////////////////////////////////////////////////////////////
-/// 🔥 GLOW ANIMATION STATE
-////////////////////////////////////////////////////////////////////////////////
 class _AppDrawerState extends State<AppDrawer>
     with SingleTickerProviderStateMixin {
 
@@ -63,7 +44,6 @@ class _AppDrawerState extends State<AppDrawer>
   void initState() {
     super.initState();
 
-    /// Repeating glow loop animation
     _glowController = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 2),
@@ -76,56 +56,48 @@ class _AppDrawerState extends State<AppDrawer>
     super.dispose();
   }
 
-////////////////////////////////////////////////////////////////////////////////
-  /// 🧱 MAIN BUILD
-////////////////////////////////////////////////////////////////////////////////
+  /// Helper method to launch a URL. Shows a debug error if it fails.
+  Future<void> _launchUrl(String url) async {
+    final uri = Uri.parse(url);
+    if (!await launchUrl(uri, mode: LaunchMode.externalApplication)) {
+      debugPrint("Could not launch $url");
+      // Optionally, show a SnackBar to the user
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("Could not open the link.")),
+        );
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-
-    ////////////////////////////////////////////////////////////////////////////
-    /// PROVIDER ACCESS
-    ////////////////////////////////////////////////////////////////////////////
-    final lang   = context.watch<LanguageProvider>();
+    final lang = context.watch<LanguageProvider>();
     final theme = context.watch<ThemeController>();
 
-    ////////////////////////////////////////////////////////////////////////////
-    /// LANGUAGE-BASED TEXT LABELS
-    ////////////////////////////////////////////////////////////////////////////
-    final tAppTitle  = lang.isKannada ? "ನಮ್ಮ ಗದಗ" : "Namma Gadag";
-    final tLogin     = lang.isKannada ? "ಲಾಗಿನ್" : "Login";
-    final tProfile   = lang.isKannada ? "ಪ್ರೊಫೈಲ್" : "Profile";
-    final tVideo     = lang.isKannada ? "ವೀಡಿಯೊ ಗ್ಯಾಲರಿ" : "Video Gallery";
-    final tImage     = lang.isKannada ? "ಚಿತ್ರ ಗ್ಯಾಲರಿ" : "Image Gallery";
-    final tTheme     = theme.isDark ? "Dark Mode" : "Light Mode";
-
+    final tAppTitle = lang.isKannada ? "ನಮ್ಮ ಗದಗ" : "Namma Gadag";
+    final tLogin = lang.isKannada ? "ಲಾಗಿನ್" : "Login";
+    final tProfile = lang.isKannada ? "ಪ್ರೊಫೈಲ್" : "Profile";
+    final tVideo = lang.isKannada ? "ವೀಡಿಯೊ ಗ್ಯಾಲರಿ" : "Video Gallery";
+    final tImage = lang.isKannada ? "ಚಿತ್ರ ಗ್ಯಾಲರಿ" : "Image Gallery";
+    final tTheme = theme.isDark ? "Dark Mode" : "Light Mode";
     final tLangLabel = lang.currentLanguageLabel;
+    final tPrivacy = lang.isKannada ? "ಗೌಪ್ಯತಾ ನೀತಿ" : "Privacy Policy";
+    final tRate = lang.isKannada ? "ರೇಟ್ ಮಾಡಿ" : "Rating";
 
-    ////////////////////////////////////////////////////////////////////////////
-    /// ROOT DRAWER
-    ////////////////////////////////////////////////////////////////////////////
+    // IMPORTANT: Replace with your actual package name
+    const String appPackageName = "com.example.namma_gadag";
+
     return Drawer(
       width: MediaQuery.of(context).size.width * .86,
-
       child: Stack(
         children: [
-
-//////////////////////////////////////////////////////////////////////////////
-// 🌫 BACKDROP BLUR (GLASS EFFECT)
-//////////////////////////////////////////////////////////////////////////////
           BackdropFilter(
             filter: ImageFilter.blur(sigmaX: 12, sigmaY: 12),
             child: Container(color: Colors.black.withOpacity(0.06)),
           ),
-
-//////////////////////////////////////////////////////////////////////////////
-// 📋 CONTENT LAYOUT
-//////////////////////////////////////////////////////////////////////////////
           Column(
             children: [
-
-//////////////////////////////////////////////////////////////////////////////
-// 🎨 HEADER WITH GLOW AVATAR
-//////////////////////////////////////////////////////////////////////////////
               AnimatedBuilder(
                 animation: _glowController,
                 builder: (_, __) {
@@ -144,10 +116,6 @@ class _AppDrawerState extends State<AppDrawer>
                     ),
                     child: Row(
                       children: [
-
-//////////////////////////////////////////////////////////////////////////////
-// 🔮 ANIMATED GOLD AVATAR
-//////////////////////////////////////////////////////////////////////////////
                         AnimatedContainer(
                           duration: const Duration(milliseconds: 700),
                           decoration: BoxDecoration(
@@ -156,8 +124,7 @@ class _AppDrawerState extends State<AppDrawer>
                               BoxShadow(
                                 blurRadius: 20,
                                 spreadRadius: 2,
-                                color: const Color(0xFFE4B23D)
-                                    .withOpacity(
+                                color: const Color(0xFFE4B23D).withOpacity(
                                   .3 + _glowController.value * .4,
                                 ),
                               ),
@@ -165,16 +132,10 @@ class _AppDrawerState extends State<AppDrawer>
                           ),
                           child: const CircleAvatar(
                             radius: 30,
-                            backgroundImage:
-                            AssetImage("assets/avatar.jpg"),
+                            backgroundImage: AssetImage("assets/avatar.jpg"),
                           ),
                         ),
-
                         const SizedBox(width: 12),
-
-//////////////////////////////////////////////////////////////////////////////
-// 🏛 TITLE TEXT
-//////////////////////////////////////////////////////////////////////////////
                         Text(
                           tAppTitle,
                           style: const TextStyle(
@@ -188,10 +149,6 @@ class _AppDrawerState extends State<AppDrawer>
                   );
                 },
               ),
-
-//////////////////////////////////////////////////////////////////////////////
-// 🔘 FEATURE GRID
-//////////////////////////////////////////////////////////////////////////////
               Padding(
                 padding: const EdgeInsets.all(14),
                 child: GridView.count(
@@ -201,37 +158,26 @@ class _AppDrawerState extends State<AppDrawer>
                   mainAxisSpacing: 14,
                   crossAxisSpacing: 14,
                   children: [
-
-                    /// LOGIN
                     _glowButton(
                       icon: Icons.login,
                       title: tLogin,
                       tap: widget.showLogin,
                     ),
-
-                    /// PROFILE
                     _glowButton(
                       icon: Icons.person,
                       title: tProfile,
                       tap: widget.showProfile,
                     ),
-
-                    /// LANGUAGE TOGGLE
                     _glowButton(
                       icon: Icons.language,
                       title: tLangLabel,
                       tap: lang.toggleLanguage,
                     ),
-
-                    /// THEME TOGGLE
                     _glowButton(
-                      icon:
-                      theme.isDark ? Icons.dark_mode : Icons.light_mode,
+                      icon: theme.isDark ? Icons.dark_mode : Icons.light_mode,
                       title: tTheme,
                       tap: theme.toggleTheme,
                     ),
-
-                    /// VIDEO GALLERY
                     _glowButton(
                       icon: Icons.video_collection_rounded,
                       title: tVideo,
@@ -242,8 +188,6 @@ class _AppDrawerState extends State<AppDrawer>
                         ),
                       ),
                     ),
-
-                    /// IMAGE GALLERY
                     _glowButton(
                       icon: Icons.image_rounded,
                       title: tImage,
@@ -254,16 +198,21 @@ class _AppDrawerState extends State<AppDrawer>
                         ),
                       ),
                     ),
+                    _glowButton(
+                      icon: Icons.privacy_tip,
+                      title: tPrivacy,
+                      tap: () => _launchUrl("https://sites.google.com/view/nammagadagprivacypolicy"),
+                    ),
+                    _glowButton(
+                      icon: Icons.star_rate,
+                      title: tRate,
+                      tap: () => _launchUrl("https://play.google.com/store/apps/details?id=$appPackageName"),
+                    ),
                   ],
                 ),
               ),
-
-//////////////////////////////////////////////////////////////////////////////
-// 🏆 RICH CREDIT BADGE
-//////////////////////////////////////////////////////////////////////////////
               Container(
-                padding:
-                const EdgeInsets.symmetric(vertical: 8, horizontal: 14),
+                padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 14),
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     colors: [
@@ -272,9 +221,7 @@ class _AppDrawerState extends State<AppDrawer>
                     ],
                   ),
                   borderRadius: BorderRadius.circular(14),
-                  boxShadow: const [
-                    BoxShadow(blurRadius: 6, color: Colors.black26)
-                  ],
+                  boxShadow: const [BoxShadow(blurRadius: 6, color: Colors.black26)],
                 ),
                 child: RichText(
                   textAlign: TextAlign.center,
@@ -282,8 +229,7 @@ class _AppDrawerState extends State<AppDrawer>
                     children: [
                       TextSpan(
                         text: "Created by\n",
-                        style:
-                        TextStyle(fontSize: 11, color: Colors.white70),
+                        style: TextStyle(fontSize: 11, color: Colors.white70),
                       ),
                       TextSpan(
                         text: "MANJUNATH KALAKAPPA HOSAMANI",
@@ -298,10 +244,6 @@ class _AppDrawerState extends State<AppDrawer>
                   ),
                 ),
               ),
-
-//////////////////////////////////////////////////////////////////////////////
-// 📸 USER PHOTO
-//////////////////////////////////////////////////////////////////////////////
               const Padding(
                 padding: EdgeInsets.all(14),
                 child: CircleAvatar(
@@ -309,7 +251,6 @@ class _AppDrawerState extends State<AppDrawer>
                   backgroundImage: AssetImage("assets/profile.jpg"),
                 ),
               ),
-
               const Spacer(),
             ],
           ),
@@ -318,9 +259,6 @@ class _AppDrawerState extends State<AppDrawer>
     );
   }
 
-////////////////////////////////////////////////////////////////////////////////
-  /// ✨ PREMIUM GLOW BUTTON
-////////////////////////////////////////////////////////////////////////////////
   Widget _glowButton({
     required IconData icon,
     required String title,

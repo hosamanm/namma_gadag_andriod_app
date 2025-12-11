@@ -13,7 +13,7 @@ publish_to: "none"
 
 # Version format → MAJOR.MINOR.PATCH+BUILD
 # Shown on Play Store / device info
-version: 1.0.0+1
+version: 1.0.0+2
 
 ###############################################################################
 # 🎯 SDK COMPATIBILITY
@@ -62,6 +62,7 @@ dependencies:
   # ✅ SHIMMER EFFECT
   # Animated glow titles & loading placeholders
   shimmer: ^3.0.0
+  change_app_package_name: ^1.5.0
 
 
 ###############################################################################

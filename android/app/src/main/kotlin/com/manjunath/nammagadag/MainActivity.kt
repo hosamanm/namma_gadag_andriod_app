@@ -1,4 +1,4 @@
-package com.example.namma_gadag
+package com.manjunath.nammagadag
 
 import io.flutter.embedding.android.FlutterActivity
 
